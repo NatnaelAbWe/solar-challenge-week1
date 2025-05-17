@@ -1,20 +1,34 @@
-# Solar Challenge - Week 1
+# 10 Academy Week 0 Final Report
 
-## 🌞 Project Purpose
-This project is part of the **10 Academy Artificial Intelligence Mastery (AIM) Week 0 Challenge**. The goal is to analyze solar radiation data from Benin, Sierra Leone, and Togo to identify high-potential regions for solar energy deployment. The challenge evaluates skills in data profiling, exploratory data analysis (EDA), statistical reasoning, and visualization.
+## 📌 Project Objective
+Brief explanation of MoonLight Energy Solutions' goal and your role in analyzing solar data across Benin, Togo, and Sierra Leone.
 
-## ⚙️ Environment Setup Instructions
+## ✅ Task 1: Git & Environment Setup
+- Created repo `solar-challenge-week1`
+- Set up Python environment and CI/CD with GitHub Actions
+- Project structure organized for collaboration
 
-To set up the project locally, follow these steps:
+## 📊 Task 2: Data Profiling, Cleaning & EDA
+- Cleaned and analyzed datasets for:
+  - **Benin** (`benin-malanville.csv`)
+  - **Togo** (`togo-dapaong_qc.csv`)
+  - **Sierra Leone** (`sierraleone-bumbuna.csv`)
+- Performed EDA with outlier handling, time series plots, correlation heatmaps
+- Exported cleaned files
 
-```bash
-# Clone the repository
-git clone <your-repo-url>
-cd solar-challenge-week1
+## 🌍 Task 3: Cross-Country Comparison
+- Compared GHI, DNI, and DHI using boxplots and statistical tests
+- Found Benin had highest average GHI
+- ANOVA results: significant difference between countries (p < 0.05)
 
-# Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
+## 🖥️ Bonus: Streamlit Dashboard
+- Built interactive dashboard to explore data by country and metric
+- Includes summary statistics and dynamic plots
+- Link to app (if deployed) or instructions to run locally
 
-# Install dependencies
-pip install -r requirements.txt
+## 🚀 Lessons Learned
+- Hands-on with Git, CI/CD, EDA, and dashboards
+- Improved data storytelling and collaboration
+
+## 🔗 GitHub Repository
+[GitHub Link](https://github.com/NatnaelAbWe/solar-challenge-week1)
