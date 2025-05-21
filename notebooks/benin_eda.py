@@ -6,34 +6,51 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import zscore
 
-# Load data
-df = pd.read_csv("../data/benin_raw.csv", parse_dates=["Timestamp"])
-print(df.info())
-print(df.describe())
+RAW_DATA_PATH = "../data/benin_raw.csv"
+CLEAN_DATA_PATH = "../data/benin_clean.csv"
+SOLAR_COLS = ["GHI", "DNI", "DHI", "ModA", "ModB", "WS", "WSgust"]
 
-# Missing values
-missing = df.isna().sum()
-print("Missing values:\n", missing[missing > 0])
+def load_data(path):
+    df = pd.read_csv(path, parse_dates=["Timestamp"])
+    print(df.info())
+    print(df.describe())
+    return df
 
-# Outlier detection
-columns_to_check = ["GHI", "DNI", "DHI", "ModA", "ModB", "WS", "WSgust"]
-df_clean = df.copy()
-z_scores = df_clean[columns_to_check].apply(zscore)
-df_clean = df_clean[(np.abs(z_scores) < 3).all(axis=1)]
+def clean_data(df, columns):
+    z_scores = df[columns].apply(zscore)
+    df = df[(np.abs(z_scores) < 3).all(axis=1)]
+    df = df.fillna(df.median(numeric_only=True))
+    return df
 
-# Fill missing values with median
-df_clean = df_clean.fillna(df_clean.median(numeric_only=True))
+def plot_daily_solar(df):
+    df.set_index("Timestamp")[["GHI", "DNI", "DHI"]].resample("D").mean().plot()
+    plt.title("Daily Solar Radiation - Benin")
+    plt.xlabel("Date")
+    plt.ylabel("Radiation (W/m²)")
+    plt.tight_layout()
+    plt.show()
 
-# Time series plot
-df_clean.set_index("Timestamp")[["GHI", "DNI", "DHI"]].resample("D").mean().plot()
-plt.title("Daily Solar Radiation - Benin")
-plt.show()
+def plot_heatmap(df, columns):
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(df[columns].corr(), annot=True, cmap="viridis")
+    plt.title("Correlation Heatmap")
+    plt.tight_layout()
+    plt.show()
 
-# Correlation heatmap
-plt.figure(figsize=(8, 6))
-sns.heatmap(df_clean[columns_to_check].corr(), annot=True, cmap="viridis")
-plt.title("Correlation Heatmap")
-plt.show()
+def main():
+    df = load_data(RAW_DATA_PATH)
 
-# Save cleaned data
-df_clean.to_csv("../data/benin_clean.csv", index=False)
+    print("\nMissing values:")
+    missing = df.isna().sum()
+    print(missing[missing > 0])
+
+    df_clean = clean_data(df, SOLAR_COLS)
+
+    plot_daily_solar(df_clean)
+    plot_heatmap(df_clean, SOLAR_COLS)
+
+    df_clean.to_csv(CLEAN_DATA_PATH, index=False)
+    print(f"\nCleaned data saved to {CLEAN_DATA_PATH}")
+
+if __name__ == "__main__":
+    main()
